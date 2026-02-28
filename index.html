@@ -4,11 +4,24 @@
     <title>Parking Garage Occupancy</title>
 </head>
 
-<body style="font-family: Arial; text-align: center; margin-top: 100px;">
+<body style="font-family: Arial; text-align: center; margin-top: 50px;">
 
-    <h1>Parking Garage Occupancy</h1>
+    <h1>Parking Garage Dashboard</h1>
 
-    <h2 id="count">Loading...</h2>
+	<!-- Stats Section -->
+    <div style="margin: 30px 0; font-size: 24px;" id="stats">
+        Loading…
+    </div>
+	
+	<!-- Progress Bar -->
+	<div style="width: 80%; margin: auto; background: #ddd; border-radius: 8px;">
+        <div id="progress" style="width: 0%; height: 30px; background: green; border-radius: 8px;"></div>
+    </div>
+
+	<!-- Last Updated Timestamp -->
+	<div style="margin-top: 15px; font-size: 18px;" id="timestamp">
+        —
+    </div>
 
     <!-- Firebase SDK -->
     <script type="module">
@@ -27,24 +40,44 @@
 		  messagingSenderId: "942036034143",
 		  appId: "1:942036034143:web:60f671fb4049baf439f1ea"
 		};
-
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-
         const rootRef = ref(database, "/");
 
+		
+		// Javascript
         onValue(rootRef, (snapshot) => {
-            const data = snapshot.val();
-			
-			const occupancy = data.occupancy;
-			const capacity = data.capacity;
-			const percent = ((occupancy / capacity) * 100).toFixed(0);
-
-			document.getElementById("count").innerText = `${occupancy} / ${capacity} (${percent}%)`;
-        });
+		    const data = snapshot.val();
+		    const occupancy = data.occupancy || 0;
+		    const capacity = data.capacity || 1; // avoid divide‑by‑zero
+		    const percent = ((occupancy / capacity) * 100).toFixed(0);
+		
+		    // Update text
+		    document.getElementById("stats").innerText =
+		        `${occupancy} / ${capacity} (${percent}%)`;
+		
+		    // Update progress bar
+		    const bar = document.getElementById("progress");
+		    bar.style.width = `${percent}%`;
+		
+		    // Change color based on fill level
+		    if (percent < 60) {
+		        bar.style.background = "green";
+		    } else if (percent < 90) {
+		        bar.style.background = "orange";
+		    } else {
+		        bar.style.background = "red";
+		    }
+		
+		    // Update timestamp
+		    const now = new Date();
+		    document.getElementById("timestamp").innerText =
+		        `Last update: ${now.toLocaleTimeString()}`;
+		});
 
     </script>
 
 </body>
 
 </html>
+
