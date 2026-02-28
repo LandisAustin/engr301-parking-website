@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Parking Garage Occupancy</title>
+    <title>Parking Garage Occupancy Tracker</title>
 </head>
 
 <body style="font-family: Arial; text-align: center; margin-top: 50px;">
@@ -15,8 +15,14 @@
 	
 	<!-- Progress Bar -->
 	<div style="width: 80%; margin: auto; background: #ddd; border-radius: 8px;">
-        <div id="progress" style="width: 0%; height: 30px; background: green; border-radius: 8px;"></div>
+        <div id="progress" style="width: 0%; height: 30px; background: green; border-radius: 8px;">
+		</div>
     </div>
+
+	<div style="margin: 20px;">
+	    <button id="increase" style="font-size: 24px; padding: 10px 20px;">+</button>
+		<button id="decrease" style="font-size: 24px; padding: 10px 20px;">–</button>
+	</div>
 
 	<!-- Last Updated Timestamp -->
 	<div style="margin-top: 15px; font-size: 18px;" id="timestamp">
@@ -80,4 +86,5 @@
 </body>
 
 </html>
+
 
