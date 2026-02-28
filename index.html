@@ -31,14 +31,20 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        const occupancyRef = ref(database, "occupancy");
+        const rootRef = ref(database, "/");
 
-        onValue(occupancyRef, (snapshot) => {
+        onValue(rootRef, (snapshot) => {
             const data = snapshot.val();
-            document.getElementById("count").innerText = data;
+			
+			const occupancy = data.occupancy;
+			const capacity = data.capacity;
+			const percent = ((occupancy / capacity) * 100).toFixed(0);
+
+			document.getElementById("count").innerText = `${occupancy} / ${capacity} (${percent}%)`;
         });
 
     </script>
 
 </body>
+
 </html>
