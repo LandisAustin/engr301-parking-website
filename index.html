@@ -20,8 +20,8 @@
     </div>
 
 	<div style="margin: 20px;">
-	    <button id="increase" style="font-size: 24px; padding: 10px 20px;">+</button>
 		<button id="decrease" style="font-size: 24px; padding: 10px 20px;">–</button>
+	    <button id="increase" style="font-size: 24px; padding: 10px 20px;">+</button>
 	</div>
 
 	<!-- Last Updated Timestamp -->
@@ -52,6 +52,8 @@
 
 		
 		// Javascript
+
+		// Update Displays
         onValue(rootRef, (snapshot) => {
 		    const data = snapshot.val();
 		    const occupancy = data.occupancy || 0;
@@ -74,11 +76,39 @@
 		    } else {
 		        bar.style.background = "red";
 		    }
-		
+
 		    // Update timestamp
 		    const now = new Date();
 		    document.getElementById("timestamp").innerText =
 		        `Last update: ${now.toLocaleTimeString()}`;
+		});
+
+		// Increase & Decrease Buttons
+		import { set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+		// Increase occupancy
+		document.getElementById("increase").addEventListener("click", () => {
+		    rootRef.get().then((snapshot) => {
+		        const data = snapshot.val();
+		        const occupancy = data.occupancy || 0;
+		        const capacity = data.capacity || 1;
+		
+		        if (occupancy < capacity) {
+		            set(ref(database, "occupancy"), occupancy + 1);
+		        }
+		    });
+		});
+		
+		// Decrease occupancy
+		document.getElementById("decrease").addEventListener("click", () => {
+		    rootRef.get().then((snapshot) => {
+		        const data = snapshot.val();
+		        const occupancy = data.occupancy || 0;
+		
+		        if (occupancy > 0) {
+		            set(ref(database, "occupancy"), occupancy - 1);
+		        }
+		    });
 		});
 
     </script>
@@ -86,5 +116,6 @@
 </body>
 
 </html>
+
 
 
