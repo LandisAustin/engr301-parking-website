@@ -18,7 +18,6 @@
         <div id="progress" style="width: 0%; height: 30px; background: green; border-radius: 8px;">
 		</div>
     </div>
-
 	<div style="margin: 20px;">
 		<button id="decrease" style="font-size: 24px; padding: 10px 20px;">–</button>
 	    <button id="increase" style="font-size: 24px; padding: 10px 20px;">+</button>
@@ -34,7 +33,7 @@
 
         // Import Firebase tools
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         // Your web app's Firebase configuration
 		const firebaseConfig = {
@@ -83,12 +82,11 @@
 		        `Last update: ${now.toLocaleTimeString()}`;
 		});
 
-		// Increase & Decrease Buttons
-		import { set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 		// Increase occupancy
 		document.getElementById("increase").addEventListener("click", () => {
-		    rootRef.get().then((snapshot) => {
+			//document.getElementById("button-debug").innerText = `Increase`;
+		    get(rootRef).then((snapshot) => {
 		        const data = snapshot.val();
 		        const occupancy = data.occupancy || 0;
 		        const capacity = data.capacity || 1;
@@ -101,7 +99,8 @@
 		
 		// Decrease occupancy
 		document.getElementById("decrease").addEventListener("click", () => {
-		    rootRef.get().then((snapshot) => {
+			//document.getElementById("button-debug").innerText = `Decrease`;
+		    get(rootRef).then((snapshot) => {
 		        const data = snapshot.val();
 		        const occupancy = data.occupancy || 0;
 		
@@ -116,6 +115,7 @@
 </body>
 
 </html>
+
 
 
 
